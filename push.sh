@@ -26,7 +26,7 @@ create_release() {
   done
 
   # Create a GitHub release and upload the files
-  gh release create $version $local_filenames --title "Release $version" $prerelease_flag
+  gh release create $version $local_filenames --title "Release $version" $prerelease_flag --confirm
 
   # Cleanup downloaded files
   rm -f $local_filenames
