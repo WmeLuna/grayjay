@@ -17,17 +17,19 @@ create_release() {
   git tag -a $version -m "Release $version"
   git push origin $version
 
-  # Download files
+  # Download files and prepare a list of local filenames
+  local_filenames=""
   IFS=',' read -ra ADDR <<< "$files"
   for i in "${ADDR[@]}"; do
     curl -sLO "${base_url}${i}"
+    local_filenames="$local_filenames $i"
   done
 
   # Create a GitHub release and upload the files
-  gh release create $version $files --title "Release $version" $prerelease_flag
+  gh release create $version $local_filenames --title "Release $version" $prerelease_flag
 
   # Cleanup downloaded files
-  rm -f $files
+  rm -f $local_filenames
 }
 
 # Fetch current stable and unstable versions
