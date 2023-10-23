@@ -1,5 +1,5 @@
 #!/bin/bash
-
+git pull
 # Function to create Git tag and GitHub release
 create_release() {
   local version=$1
