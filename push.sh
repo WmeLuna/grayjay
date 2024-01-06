@@ -10,7 +10,14 @@ create_release() {
   # Check if tag already exists
   if git rev-parse $version >/dev/null 2>&1; then
     echo "Tag $version already exists. Skipping."
-    return
+		#if stable local && unstable remote
+		if [ -z "$prerelease_flag" ] && gh release view $version --json isPrerelease -q .isPrerelease | grep true; then
+		  gh release delete $version -y
+			git tag -d $version
+			git push origin --delete $version
+		else
+      return
+		fi
   fi
 
   # Create and push a Git tag
